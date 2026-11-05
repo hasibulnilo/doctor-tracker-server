@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { DoctorModel, PatientModel } from '../database/models.js';
-import { authenticate } from '../middleware/auth.js';
+import { DoctorModel, PatientModel } from '../database/models';
+import { authenticate } from '../middleware/auth';
 
 const router = Router();
 
