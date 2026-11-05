@@ -6,23 +6,33 @@ const router = Router();
 
 router.get('/', authenticate, async (_req, res) => {
   try {
-    const [totalDoctors, totalPatients, patientsPerDoctor, monthlyPatients] = await Promise.all([
+    const [totalDoctors, totalPatients, monthlyPatients, patientCounts] = await Promise.all([
       DoctorModel.countDocuments(),
       PatientModel.countDocuments(),
-      PatientModel.aggregate([
-        { $group: { _id: '$doctor', count: { $sum: 1 } } },
-        { $lookup: { from: 'doctors', localField: '_id', foreignField: '_id', as: 'doctor' } },
-        { $unwind: { path: '$doctor', preserveNullAndEmptyArrays: true } },
-        { $project: { _id: 0, doctorId: '$_id', doctorName: '$doctor.name', patients: '$count' } },
-        { $sort: { patients: -1 } },
-        { $limit: 10 },
-      ]),
       PatientModel.aggregate([
         { $group: { _id: { $dateToString: { format: '%Y-%m', date: '$createdAt' } }, count: { $sum: 1 } } },
         { $sort: { _id: 1 } },
         { $limit: 12 },
       ]),
+      PatientModel.aggregate([
+        { $group: { _id: '$doctor', patients: { $sum: 1 } } },
+        { $sort: { patients: -1 } },
+        { $limit: 10 },
+      ]),
     ]);
+
+    const doctorIds = patientCounts.map((item) => item._id).filter(Boolean);
+    const doctorsById = doctorIds.length
+      ? await DoctorModel.find({ _id: { $in: doctorIds } }, { name: 1 }).lean()
+      : [];
+
+    const doctorNameMap = new Map(doctorsById.map((doctor) => [String(doctor._id), doctor.name]));
+
+    const patientsPerDoctor = patientCounts.map((item) => ({
+      doctorId: String(item._id),
+      doctorName: doctorNameMap.get(String(item._id)) || 'Unknown Doctor',
+      patients: item.patients,
+    }));
 
     return res.json({ totalDoctors, totalPatients, patientsPerDoctor, monthlyPatients });
   } catch (error) {
