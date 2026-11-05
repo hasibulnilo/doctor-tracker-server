@@ -1,6 +1,0 @@
-﻿{
-  "framework": "nextjs",
-  "installCommand": "cd doctor-tracker/doctor-tracker-client && npm install",
-  "buildCommand": "cd doctor-tracker/doctor-tracker-client && npm run build",
-  "outputDirectory": "doctor-tracker/doctor-tracker-client/.next"
-}
