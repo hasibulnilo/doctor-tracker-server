@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
-import { UserModel } from '../database/models';
-import { authenticate } from '../middleware/auth';
+import { UserModel } from '../database/models.js';
+import { authenticate } from '../middleware/auth.js';
 
 const router = Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'doctor-tracker-dev-secret';

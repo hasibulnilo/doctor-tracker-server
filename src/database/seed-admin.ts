@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import mongoose from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { UserSchema } from '../database/schemas/user.schema';
+import { UserSchema } from '../database/schemas/user.schema.js';
 
 const UserModel: mongoose.Model<any> = (mongoose.models.User as mongoose.Model<any>) ?? mongoose.model('User', UserSchema);
 

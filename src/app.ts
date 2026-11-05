@@ -1,10 +1,10 @@
 import 'dotenv/config';
 import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
-import authRoutes from './routes/auth.routes';
-import doctorRoutes from './routes/doctor.routes';
-import patientRoutes from './routes/patient.routes';
-import dashboardRoutes from './routes/dashboard.routes';
+import authRoutes from './routes/auth.routes.js';
+import doctorRoutes from './routes/doctor.routes.js';
+import patientRoutes from './routes/patient.routes.js';
+import dashboardRoutes from './routes/dashboard.routes.js';
 
 const app = express();
 const frontendOrigin = process.env.FRONTEND_URL || 'http://localhost:3000';

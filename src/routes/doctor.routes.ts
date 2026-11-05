@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { DoctorModel, PatientModel } from '../database/models';
-import { authenticate } from '../middleware/auth';
-import { buildPagination } from '../utils/pagination';
+import { DoctorModel, PatientModel } from '../database/models.js';
+import { authenticate } from '../middleware/auth.js';
+import { buildPagination } from '../utils/pagination.js';
 
 const router = Router();
 
